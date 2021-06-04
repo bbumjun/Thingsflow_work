@@ -37,7 +37,7 @@ const IssueList = ({ author, repository }) => {
       <ul>
         {data.map((item) => (
           <Link
-            to={`issuses/${item.number}`}
+            to={`issues/${item.number}`}
             key={item.id}
             style={{ textDecoration: "none", color: "black" }}
           >

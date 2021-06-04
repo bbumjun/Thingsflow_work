@@ -13,7 +13,7 @@ function App() {
           <Route exact path={"/"}>
             <IssueList author={author} repository={repository} />
           </Route>
-          <Route exact path={"issues/:issueNumber"}>
+          <Route exact path={"/issues/:issueNumber"}>
             <IssueDetail author={author} repository={repository} />
           </Route>
         </Switch>

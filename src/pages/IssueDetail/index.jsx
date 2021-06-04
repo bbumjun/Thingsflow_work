@@ -3,16 +3,18 @@ import Layout from "../../components/Layout";
 import { useParams } from "react-router-dom";
 import IssueItem from "../../components/IssueItem";
 import { octokit } from "../../constants";
-const IssueDetail = () => {
+import ReactMd from "react-markdown";
+const IssueDetail = ({ author, repository }) => {
   const { issueNumber } = useParams();
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
+
   useEffect(() => {
-    const fetchIssueDetail = async ({ author, repository }) => {
+    const fetchIssueDetail = async () => {
       try {
         setLoading(true);
         const response = await octokit.request(
-          "GET /repos/{owner}/{repo}/issues",
+          "GET /repos/{owner}/{repo}/issues/{issue_number}",
           {
             owner: author,
             repo: repository,
@@ -20,7 +22,6 @@ const IssueDetail = () => {
           }
         );
         setData(response.data);
-        console.log(response.data);
       } catch (err) {
         console.log(err);
       } finally {
@@ -32,12 +33,12 @@ const IssueDetail = () => {
   }, []);
 
   if (loading) return <Layout>Loading....</Layout>;
-  if (data.length === 0) return <Layout>Nothing to show</Layout>;
+  if (data === null) return <Layout>Nothing to show</Layout>;
 
   return (
     <Layout>
-      <div>ddd</div>
-      <IssueItem />
+      <IssueItem data={data} />
+      <ReactMd>{data.body}</ReactMd>
     </Layout>
   );
 };
